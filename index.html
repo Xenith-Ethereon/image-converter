@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="在线图片格式转换工具，将任意图片压缩为200KB以内的PNG格式，支持自定义文件名下载。纯浏览器端处理，无需上传服务器。">
+  <title>图片压缩转换工具</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖼️</text></svg>">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>图片转换</h1>
+      <p class="app-desc">上传图片，自动转换为 200KB 以内的 PNG 格式</p>
+    </header>
+
+    <section id="uploadSection">
+      <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="上传图片">
+        <input type="file" id="fileInput" accept="image/*" hidden>
+        <svg class="upload-icon" width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 28V14"/>
+          <path d="M16 20l6-6 6 6"/>
+          <path d="M8 28v4a4 4 0 004 4h20a4 4 0 004-4v-4"/>
+        </svg>
+        <p class="upload-text">点击或拖拽上传图片</p>
+        <p class="upload-hint">支持 JPG / PNG / WebP / BMP / GIF 等格式</p>
+      </div>
+    </section>
+
+    <section id="previewSection" class="hidden">
+      <div class="preview-card">
+        <div class="preview-image-wrap">
+          <img id="previewImage" alt="原图预览">
+        </div>
+        <div class="preview-info">
+          <div class="info-row">
+            <span class="info-label">文件名</span>
+            <span class="info-value" id="infoName">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">格式</span>
+            <span class="info-value" id="infoFormat">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">大小</span>
+            <span class="info-value" id="infoSize">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">尺寸</span>
+            <span class="info-value" id="infoDimension">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filename-group">
+        <label class="filename-label" for="filenameInput">输入文件名</label>
+        <div class="filename-input-wrap">
+          <input type="text" id="filenameInput" placeholder="输入文件名" autocomplete="off" spellcheck="false">
+          <span class="filename-suffix">.png</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="convertBtn" type="button">
+        <span class="spinner" aria-hidden="true"></span>
+        <span class="btn-label">开始转换</span>
+      </button>
+
+      <div id="errorMessage" class="error-message hidden"></div>
+    </section>
+
+    <section id="resultSection" class="hidden">
+      <div class="result-card">
+        <div class="result-header">
+          <span class="result-badge">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5l3 3 5-6"/></svg>
+            转换完成
+          </span>
+        </div>
+        <div class="result-image-wrap">
+          <img id="resultImage" alt="转换结果">
+        </div>
+        <div class="result-info">
+          <div class="info-row">
+            <span class="info-label">大小</span>
+            <span class="info-value">
+              <span id="cmpOrigSize">—</span>
+              <span class="arrow">→</span>
+              <span id="cmpNewSize" class="text-success">—</span>
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">尺寸</span>
+            <span class="info-value">
+              <span id="cmpOrigDim">—</span>
+              <span class="arrow">→</span>
+              <span id="cmpNewDim">—</span>
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">格式</span>
+            <span class="info-value">
+              <span id="cmpOrigFormat">—</span>
+              <span class="arrow">→</span>
+              <span class="text-success">PNG</span>
+            </span>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn-success" id="downloadBtn" type="button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v8"/><path d="M4 8l4 4 4-4"/><path d="M2 13h12"/></svg>
+            下载图片
+          </button>
+        </div>
+      </div>
+      <button class="btn-outline" id="resetBtn" type="button">重新上传</button>
+    </section>
+
+    <footer class="app-footer">
+      <p>所有处理均在本地完成，图片<a style="color: #dc3545;">不会</a>上传至任何服务器</p>
+      <p>@星淆Xenith. 源码<a href="https://github.com/Xenith-Ethereon/image-converter" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+    </footer>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>

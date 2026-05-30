@@ -253,6 +253,12 @@
     }
   }
 
+  /** 检测是否为 iOS 设备 */
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
   function handleDownload() {
     if (!resultBlob) return;
 
@@ -261,14 +267,31 @@
     if (!name.toLowerCase().endsWith('.png')) name += '.png';
 
     const url = URL.createObjectURL(resultBlob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
 
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    // iOS Safari 不支持 <a download> 编程式触发，改为新窗口打开让用户长按保存
+    if (isIOS()) {
+      const w = window.open(url, '_blank');
+      if (!w) {
+        // 弹窗被拦截时，直接在当前页面跳转
+        window.location.href = url;
+      }
+      return;
+    }
+
+    try {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (e) {
+      // 降级：新窗口打开
+      window.open(url, '_blank');
+    }
+
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
   }
 
   uploadZone.addEventListener('click', () => fileInput.click());

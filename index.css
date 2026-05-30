@@ -422,6 +422,13 @@ img {
   display: none !important;
 }
 
+.save-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--color-text-3);
+  text-align: center;
+}
+
 #previewSection,
 #resultSection {
   animation: fadeInUp 280ms var(--ease);
